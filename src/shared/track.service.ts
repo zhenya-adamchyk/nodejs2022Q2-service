@@ -1,22 +1,23 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as uuidv from 'uuid';
 import { TrackDto } from '../track/dto/track.dto';
+import { wrongIdOrCantFind } from '../helpers/wrongIdOrCantFind';
 
 @Injectable()
 export class TrackService {
-  tracks = [];
+  tracks: TrackDto[] = [];
 
   getTracks() {
     return this.tracks;
   }
 
   getTrack(id: string) {
-    this.wrongIdOrCantFind(id);
+    wrongIdOrCantFind(id, this.tracks);
     return this.tracks.find((track: TrackDto) => track.id === id);
   }
 
   updateTrack(body: TrackDto, id: string) {
-    this.wrongIdOrCantFind(id);
+    wrongIdOrCantFind(id, this.tracks);
     const newTrack = body;
     this.tracks = this.tracks.map((track: TrackDto) => {
       if (track.id === id) {
@@ -29,7 +30,7 @@ export class TrackService {
   }
 
   deleteTrack(id: string) {
-    this.wrongIdOrCantFind(id);
+    wrongIdOrCantFind(id, this.tracks);
     this.tracks = this.tracks.filter((track: TrackDto) => track.id !== id);
   }
 
@@ -44,17 +45,5 @@ export class TrackService {
       newTrack.id = uuidv.v4();
       this.tracks.push(newTrack);
     }
-  }
-
-  wrongIdOrCantFind(id: string) {
-    if (!uuidv.validate(id)) {
-      throw new HttpException('Wrong id', HttpStatus.BAD_REQUEST);
-    } else if (!this.isTrackExist(id)) {
-      throw new HttpException('Cant find', HttpStatus.NOT_FOUND);
-    }
-  }
-
-  isTrackExist(id: string): boolean {
-    return !!this.tracks.find((track: TrackDto) => track.id === id);
   }
 }

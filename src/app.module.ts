@@ -6,10 +6,11 @@ import { FavoritesService } from './shared/favorites.service';
 import { UserService } from './shared/user.service';
 import { AlbumService } from './shared/album.service';
 import { ArtistService } from './shared/artist.service';
+import { AlbumController } from './album/album.controller';
 
 @Module({
   imports: [ConfigModule.forRoot()],
-  controllers: [TrackController],
+  controllers: [TrackController, AlbumController],
   providers: [
     TrackService,
     FavoritesService,
