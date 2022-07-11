@@ -43,7 +43,7 @@ describe('Tracks (e2e)', () => {
   });
 
   describe('GET', () => {
-    it('should correctly get all tracks', async () => {
+    it('should correctly get all track', async () => {
       const response = await unauthorizedRequest
         .get(tracksRoutes.getAll)
         .set(commonHeaders);
