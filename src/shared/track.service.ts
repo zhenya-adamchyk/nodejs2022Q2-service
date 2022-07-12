@@ -17,16 +17,24 @@ export class TrackService {
   }
 
   updateTrack(body: TrackDto, id: string) {
-    wrongIdOrCantFind(id, this.tracks);
-    const newTrack = body;
-    this.tracks = this.tracks.map((track: TrackDto) => {
-      if (track.id === id) {
-        newTrack.id = id;
-        return newTrack;
-      } else {
-        return track;
-      }
-    });
+    if (!body.name || !body.duration) {
+      throw new HttpException(
+        'name and duration required',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else {
+      wrongIdOrCantFind(id, this.tracks);
+      const newTrack = body;
+      this.tracks = this.tracks.map((track: TrackDto) => {
+        if (track.id === id) {
+          newTrack.id = id;
+          return newTrack;
+        } else {
+          return track;
+        }
+      });
+      return newTrack;
+    }
   }
 
   deleteTrack(id: string) {
@@ -44,6 +52,25 @@ export class TrackService {
       const newTrack = body;
       newTrack.id = uuidv.v4();
       this.tracks.push(newTrack);
+      return newTrack;
     }
+  }
+
+  deleteArtistId(artistId: string) {
+    this.tracks = this.tracks.map((track: TrackDto) => {
+      if (artistId === track.artistId) {
+        track.artistId = null;
+      }
+      return track;
+    });
+  }
+
+  deleteAlbumId(albumId: string) {
+    this.tracks = this.tracks.map((track: TrackDto) => {
+      if (track.albumId === albumId) {
+        track.albumId = null;
+      }
+      return track;
+    });
   }
 }
