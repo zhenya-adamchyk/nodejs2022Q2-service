@@ -1,12 +1,24 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { ArtistDto } from '../artist/dto/artist.dto';
 import { wrongIdOrCantFind } from '../helpers/wrongIdOrCantFind';
 import * as uuidv from 'uuid';
 import { TrackService } from './track.service';
+import { FavoritesService } from './favorites.service';
 
 @Injectable()
 export class ArtistService {
-  constructor(private readonly trackService: TrackService) {}
+  constructor(
+    @Inject(forwardRef(() => TrackService))
+    private readonly trackService: TrackService,
+    @Inject(forwardRef(() => FavoritesService))
+    private readonly favoritesService: FavoritesService,
+  ) {}
   artists: ArtistDto[] = [];
 
   getArtists() {
@@ -48,6 +60,12 @@ export class ArtistService {
     this.trackService.deleteArtistId(id);
     this.trackService.deleteAlbumId(id);
     this.artists = this.artists.filter((artist: ArtistDto) => artist.id !== id);
+    if (this.favoritesService.favs.artists.length) {
+      this.favoritesService.favs.artists =
+        this.favoritesService.favs.artists.filter((artist) => {
+          return artist.id !== id;
+        });
+    }
   }
 
   createArtist(body: ArtistDto) {

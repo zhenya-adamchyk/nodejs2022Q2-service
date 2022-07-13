@@ -13,7 +13,13 @@ import { UserController } from './user/user.controller';
 
 @Module({
   imports: [ConfigModule.forRoot()],
-  controllers: [TrackController, AlbumController, ArtistController, FavsController, UserController],
+  controllers: [
+    TrackController,
+    AlbumController,
+    ArtistController,
+    FavsController,
+    UserController,
+  ],
   providers: [
     TrackService,
     FavoritesService,

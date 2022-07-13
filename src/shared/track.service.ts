@@ -1,10 +1,21 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import * as uuidv from 'uuid';
 import { TrackDto } from '../track/dto/track.dto';
 import { wrongIdOrCantFind } from '../helpers/wrongIdOrCantFind';
+import { FavoritesService } from './favorites.service';
 
 @Injectable()
 export class TrackService {
+  constructor(
+    @Inject(forwardRef(() => FavoritesService))
+    private readonly favoritesService: FavoritesService,
+  ) {}
   tracks: TrackDto[] = [];
 
   getTracks() {
@@ -40,6 +51,12 @@ export class TrackService {
   deleteTrack(id: string) {
     wrongIdOrCantFind(id, this.tracks);
     this.tracks = this.tracks.filter((track: TrackDto) => track.id !== id);
+    if (this.favoritesService.favs.tracks.length) {
+      this.favoritesService.favs.tracks =
+        this.favoritesService.favs.tracks.filter((track) => {
+          return track.id !== id;
+        });
+    }
   }
 
   createTrack(body: TrackDto) {

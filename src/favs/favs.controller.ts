@@ -1,46 +1,51 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from "@nestjs/common";
-import { FavoritesService } from "../shared/favorites.service";
-import { TrackDto } from "../track/dto/track.dto";
-import { AlbumDto } from "../album/dto/album.dto";
-import { ArtistDto } from "../artist/dto/artist.dto";
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
+import { FavoritesService } from '../shared/favorites.service';
 
 @Controller('favs')
 export class FavsController {
-  constructor(private readonly favsService: FavoritesService) {
-  }
+  constructor(private readonly favsService: FavoritesService) {}
+
   @Get()
   getFavs() {
-    this.favsService.getFavs();
+    return this.favsService.getFavs();
   }
 
-  @Post()
-  pushTrack(@Body() trackDto: TrackDto) {
-    return this.favsService.pushTrack(trackDto);
+  @Post('track/:id')
+  pushTrack(@Param('id') id: string) {
+    return this.favsService.pushTrack(id);
   }
 
-  @Delete(':id')
+  @Delete('track/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteTrack(@Param('id') id: string) {
     return this.favsService.deleteTrack(id);
   }
 
-  @Post()
-  pushAlbum(@Body() albumDto: AlbumDto) {
-    return this.favsService.pushAlbum(albumDto);
+  @Post('album/:id')
+  pushAlbum(@Param('id') id: string) {
+    return this.favsService.pushAlbum(id);
   }
 
-  @Delete(':id')
+  @Delete('album/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteAlbum(@Param('id') id: string) {
     return this.favsService.deleteAlbum(id);
   }
 
-  @Post()
-  pushArtist(@Body() artistDto: ArtistDto) {
-    return this.favsService.pushArtist(artistDto);
+  @Post('artist/:id')
+  pushArtist(@Param('id') id: string) {
+    return this.favsService.pushArtist(id);
   }
 
-  @Delete(':id')
+  @Delete('artist/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteArtist(@Param('id') id: string) {
     return this.favsService.deleteArtist(id);
