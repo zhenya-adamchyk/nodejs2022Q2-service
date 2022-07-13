@@ -109,9 +109,9 @@ describe('Favorites (e2e)', () => {
       const addTrackToFavoritesResponse = await unauthorizedRequest
         .post(favoritesRoutes.tracks(trackId))
         .set(commonHeaders);
-      //
+
       expect(addTrackToFavoritesResponse.status).toBe(StatusCodes.CREATED);
-      //
+
       const addAlbumToFavoritesResponse = await unauthorizedRequest
         .post(favoritesRoutes.albums(albumId))
         .set(commonHeaders);
