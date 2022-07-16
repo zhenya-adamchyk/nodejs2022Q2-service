@@ -60,16 +60,15 @@ export class ArtistService {
     this.trackService.deleteArtistId(id);
     this.trackService.deleteAlbumId(id);
     this.artists = this.artists.filter((artist: ArtistDto) => artist.id !== id);
-    if (this.favoritesService.favs.artists.length) {
-      this.favoritesService.favs.artists =
-        this.favoritesService.favs.artists.filter((artist) => {
-          return artist.id !== id;
-        });
-    }
+    this.favoritesService.deleteFromFavsWhenDeleteItem('artists', id);
   }
 
   createArtist(body: ArtistDto) {
-    if (!body.name || !body.grammy || typeof body.grammy !== 'boolean') {
+    if (
+      !body.name ||
+      !body.hasOwnProperty('grammy') ||
+      typeof body.grammy !== 'boolean'
+    ) {
       throw new HttpException(
         'name and grammy required',
         HttpStatus.BAD_REQUEST,

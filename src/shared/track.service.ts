@@ -51,12 +51,7 @@ export class TrackService {
   deleteTrack(id: string) {
     wrongIdOrCantFind(id, this.tracks);
     this.tracks = this.tracks.filter((track: TrackDto) => track.id !== id);
-    if (this.favoritesService.favs.tracks.length) {
-      this.favoritesService.favs.tracks =
-        this.favoritesService.favs.tracks.filter((track) => {
-          return track.id !== id;
-        });
-    }
+    this.favoritesService.deleteFromFavsWhenDeleteItem('tracks', id);
   }
 
   createTrack(body: TrackDto) {

@@ -88,4 +88,14 @@ export class FavoritesService {
       return track;
     });
   }
+
+  deleteFromFavsWhenDeleteItem(arrName: string, id: string) {
+    if (this.favs[arrName].length) {
+      this.favs[arrName] = this.favs[arrName].filter(
+        (item: TrackDto | AlbumDto | ArtistDto) => {
+          return item.id !== id;
+        },
+      );
+    }
+  }
 }

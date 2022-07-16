@@ -53,12 +53,7 @@ export class AlbumService {
     wrongIdOrCantFind(id, this.albums);
     this.trackService.deleteAlbumId(id);
     this.albums = this.albums.filter((album: AlbumDto) => album.id !== id);
-    if (this.favoritesService.favs.albums.length) {
-      this.favoritesService.favs.albums =
-        this.favoritesService.favs.albums.filter((album) => {
-          return album.id !== id;
-        });
-    }
+    this.favoritesService.deleteFromFavsWhenDeleteItem('albums', id);
   }
 
   createAlbum(body: AlbumDto) {
