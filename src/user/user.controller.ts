@@ -31,17 +31,17 @@ export class UserController {
     return this.userService.createUser(createUserDto);
   }
 
-  @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  deleteUser(@Param('id') id: string) {
-    return this.userService.deleteUser(id);
-  }
-
   @Put(':id')
   updateUser(
     @Body() updateUserPasswordDto: UpdateUserPasswordDto,
     @Param('id') id: string,
   ) {
     return this.userService.updateUser(updateUserPasswordDto, id);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteUser(@Param('id') id: string) {
+    return this.userService.deleteUser(id);
   }
 }
