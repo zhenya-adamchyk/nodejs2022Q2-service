@@ -20,12 +20,11 @@ npm install
 ## Running application
 
 ```
+git checkout develop
 npm start
 ```
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+You can check api paste all text from file doc/api.yaml and paste to this site https://editor.swagger.io/
 
 ## Testing
 
@@ -43,17 +42,23 @@ To run only one of all test suites
 npm run test -- <path to suite>
 ```
 
-To run all test with authorization
+[//]: # (To run all test with authorization)
 
-```
-npm run test:auth
-```
+[//]: # ()
+[//]: # (```)
 
-To run only specific test suite with authorization
+[//]: # (npm run test:auth)
 
-```
-npm run test:auth -- <path to suite>
-```
+[//]: # (```)
+
+[//]: # (To run only specific test suite with authorization)
+
+[//]: # ()
+[//]: # (```)
+
+[//]: # (npm run test:auth -- <path to suite>)
+
+[//]: # (```)
 
 ### Auto-fix and format
 
@@ -61,9 +66,11 @@ npm run test:auth -- <path to suite>
 npm run lint
 ```
 
-```
-npm run format
-```
+[//]: # (```)
+
+[//]: # (npm run format)
+
+[//]: # (```)
 
 ### Debugging in VSCode
 
