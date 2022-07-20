@@ -1,11 +1,12 @@
 import { Exclude } from 'class-transformer';
-import { IsInt, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateUserDto {
   @IsString()
   id: string;
 
   @IsString()
+  @IsNotEmpty()
   login: string;
 
   @IsInt()
@@ -19,6 +20,7 @@ export class CreateUserDto {
 
   @Exclude()
   @IsString()
+  @IsNotEmpty()
   password: string;
 
   constructor(partial: Partial<CreateUserDto>) {
