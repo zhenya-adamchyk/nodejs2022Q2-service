@@ -5,85 +5,71 @@ import {
   Inject,
   Injectable,
 } from '@nestjs/common';
-import * as uuidv from 'uuid';
+import * as uuid from 'uuid';
 import { TrackDto } from '../track/dto/track.dto';
-import { wrongIdOrCantFind } from '../helpers/wrongIdOrCantFind';
-import { FavoritesService } from './favorites.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class TrackService {
-  constructor(
-    @Inject(forwardRef(() => FavoritesService))
-    private readonly favoritesService: FavoritesService,
-  ) {}
-  tracks: TrackDto[] = [];
+  constructor(private readonly prisma: PrismaService) {}
 
-  getTracks() {
-    console.log('aaa')
-    return this.tracks;
+  async getTracks() {
+    return await this.prisma.track.findMany();
   }
 
-  getTrack(id: string) {
-    wrongIdOrCantFind(id, this.tracks);
-    return this.tracks.find((track: TrackDto) => track.id === id);
+  async getTrack(id: string) {
+    const track = await this.prisma.track.findUnique({ where: { id: id } });
+    if (!uuid.validate(id)) {
+      throw new HttpException('Wrong id', HttpStatus.BAD_REQUEST);
+    } else if (!track) {
+      throw new HttpException('Cant find', HttpStatus.NOT_FOUND);
+    } else {
+      return track;
+    }
   }
 
-  updateTrack(body: TrackDto, id: string) {
+  async updateTrack(body: TrackDto, id: string) {
+    const track = await this.getTrack(id);
     if (!body.name || !body.duration) {
       throw new HttpException(
         'name and duration required',
         HttpStatus.BAD_REQUEST,
       );
+    } else if (!uuid.validate(id)) {
+      throw new HttpException('Wrong id', HttpStatus.BAD_REQUEST);
+    } else if (!track) {
+      throw new HttpException('Cant find', HttpStatus.NOT_FOUND);
     } else {
-      wrongIdOrCantFind(id, this.tracks);
-      const newTrack = body;
-      this.tracks = this.tracks.map((track: TrackDto) => {
-        if (track.id === id) {
-          newTrack.id = id;
-          return newTrack;
-        } else {
-          return track;
-        }
+      await this.prisma.track.updateMany({
+        where: { id: id },
+        data: { name: body.name, duration: body.duration },
       });
-      return newTrack;
+      return await this.getTrack(id);
     }
   }
 
-  deleteTrack(id: string) {
-    wrongIdOrCantFind(id, this.tracks);
-    this.tracks = this.tracks.filter((track: TrackDto) => track.id !== id);
-    this.favoritesService.deleteFromFavsWhenDeleteItem('tracks', id);
+  async deleteTrack(id: string) {
+    const track = await this.prisma.track.findUnique({ where: { id: id } });
+    if (!uuid.validate(id)) {
+      throw new HttpException('Wrong id', HttpStatus.BAD_REQUEST);
+    } else if (!track) {
+      throw new HttpException('Cant find', HttpStatus.NOT_FOUND);
+    } else {
+      await this.prisma.track.deleteMany({ where: { id: id } });
+    }
   }
 
-  createTrack(body: TrackDto) {
+  async createTrack(body: TrackDto) {
     if (!body.name || !body.duration) {
       throw new HttpException(
         'name and duration required',
         HttpStatus.BAD_REQUEST,
       );
     } else {
-      const newTrack = body;
-      newTrack.id = uuidv.v4();
-      this.tracks.push(newTrack);
-      return newTrack;
+      const trackId = uuid.v4();
+      return await this.prisma.track.create({
+        data: { name: body.name, duration: body.duration, id: trackId },
+      });
     }
-  }
-
-  deleteArtistId(artistId: string) {
-    this.tracks = this.tracks.map((track: TrackDto) => {
-      if (artistId === track.artistId) {
-        track.artistId = null;
-      }
-      return track;
-    });
-  }
-
-  deleteAlbumId(albumId: string) {
-    this.tracks = this.tracks.map((track: TrackDto) => {
-      if (track.albumId === albumId) {
-        track.albumId = null;
-      }
-      return track;
-    });
   }
 }

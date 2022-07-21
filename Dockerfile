@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-#COPY prisma ./prisma/
+COPY prisma ./prisma/
 
 RUN npm install
 
@@ -14,7 +14,7 @@ ENV PORT 4000
 
 EXPOSE $PORT
 
-RUN #npx prisma generate
+RUN npx prisma generate
 
 #RUN npm run build
 #

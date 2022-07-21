@@ -10,10 +10,10 @@ import { AlbumController } from './album/album.controller';
 import { ArtistController } from './artist/artist.controller';
 import { FavsController } from './favs/favs.controller';
 import { UserController } from './user/user.controller';
-// import { PrismaModule } from './prisma/prisma.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [ConfigModule.forRoot()],
+  imports: [ConfigModule.forRoot(), PrismaModule],
   controllers: [
     TrackController,
     AlbumController,
