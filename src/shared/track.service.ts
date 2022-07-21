@@ -19,7 +19,6 @@ export class TrackService {
   tracks: TrackDto[] = [];
 
   getTracks() {
-    console.log('aaa')
     return this.tracks;
   }
 
