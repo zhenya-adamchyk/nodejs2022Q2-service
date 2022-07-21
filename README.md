@@ -1,5 +1,9 @@
 # Home Library Service
 
+> Let's try to create a Home Library Service! `Users` can create, read, update, delete data about `Artists`, `Tracks` and `Albums`, add them to `Favorites` in their own Home Library!
+
+---
+
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
@@ -8,7 +12,13 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/zhenya-adamchyk/nodejs2022Q2-service
+```
+
+## Go to project root directory
+
+```
+cd nodejs2022Q2-service
 ```
 
 ## Installing NPM modules
@@ -20,45 +30,30 @@ npm install
 ## Running application
 
 ```
-git checkout develop
-npm start
+docker compose up
 ```
 
-You can check api paste all text from file doc/api.yaml and paste to this site https://editor.swagger.io/
+---
 
-## Testing
+## Docker scan
 
-After application running open new terminal and enter:
-
-To run all tests without authorization
+For scan server
 
 ```
-npm run test
+npm run docker:scan:main
 ```
 
-To run only one of all test suites
+For scan db
+
+```
+npm run docker:scan:postgres
+```
+
+---
 
 ```
 npm run test -- <path to suite>
 ```
-
-[//]: # (To run all test with authorization)
-
-[//]: # ()
-[//]: # (```)
-
-[//]: # (npm run test:auth)
-
-[//]: # (```)
-
-[//]: # (To run only specific test suite with authorization)
-
-[//]: # ()
-[//]: # (```)
-
-[//]: # (npm run test:auth -- <path to suite>)
-
-[//]: # (```)
 
 ### Auto-fix and format
 
@@ -66,14 +61,28 @@ npm run test -- <path to suite>
 npm run lint
 ```
 
-[//]: # (```)
-
-[//]: # (npm run format)
-
-[//]: # (```)
-
 ### Debugging in VSCode
 
 Press <kbd>F5</kbd> to debug.
 
 For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+
+---
+
+## Used technologies:
+- TypeScript
+- docker
+- nestjs
+- swagger
+- class-validator
+- uuid
+- dotenv
+- jest
+- eslint
+- prettier
+- node.js version: 16 LTS
+
+---
+
+## Authors:
+*[Zhenya-Adamchyk](https://github.com/zhenya-adamchyk)*
