@@ -2,6 +2,8 @@ FROM node:lts-alpine
 
 WORKDIR /usr/src/app
 
+RUN mkdir -p /opt/app
+
 COPY package*.json ./
 
 COPY prisma ./prisma/
