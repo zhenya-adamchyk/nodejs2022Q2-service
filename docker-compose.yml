@@ -5,6 +5,9 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
       - 4000:4000
     command: npm run start:dev
@@ -14,9 +17,6 @@ services:
       DATABASE_URL: postgresql://postgres:123@postgres:5432/nest?schema=public&connect_timeout=300
     depends_on:
       - postgres
-#    volumes:
-#      - ./:/usr/src/app
-#      - /usr/src/app/node_modules
   postgres:
     build:
       context: .
@@ -29,10 +29,10 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - 5432:5432
-#    networks:
-#      - postgres
-#    volumes:
-#      - /var/lib/postgresql/data
+    #    networks:
+    #      - postgres
+    volumes:
+      - /var/lib/postgresql/data
 
 #networks:
 #  postgres:
