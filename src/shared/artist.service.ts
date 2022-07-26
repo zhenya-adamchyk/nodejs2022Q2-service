@@ -18,9 +18,7 @@ export class ArtistService {
   }
 
   async getArtist(id) {
-    const artist = await this.prisma.artist.findUnique({
-      where: { id: id },
-    });
+    const artist = await this.prisma.artist.findFirst({ where: { id: id } });
     if (!uuid.validate(id)) {
       throw new HttpException('Wrong id', HttpStatus.BAD_REQUEST);
     } else if (!artist) {

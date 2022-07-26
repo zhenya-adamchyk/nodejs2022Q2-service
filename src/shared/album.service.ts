@@ -18,7 +18,7 @@ export class AlbumService {
   }
 
   async getAlbum(id: string) {
-    const album = await this.prisma.album.findUnique({ where: { id: id } });
+    const album = await this.prisma.album.findFirst({ where: { id: id } });
     if (!uuid.validate(id)) {
       throw new HttpException('Wrong id', HttpStatus.BAD_REQUEST);
     } else if (!album) {

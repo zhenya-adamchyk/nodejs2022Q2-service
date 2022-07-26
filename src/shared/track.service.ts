@@ -18,7 +18,7 @@ export class TrackService {
   }
 
   async getTrack(id: string) {
-    const track = await this.prisma.track.findUnique({ where: { id: id } });
+    const track = await this.prisma.track.findFirst({ where: { id: id } });
     if (!uuid.validate(id)) {
       throw new HttpException('Wrong id', HttpStatus.BAD_REQUEST);
     } else if (!track) {
