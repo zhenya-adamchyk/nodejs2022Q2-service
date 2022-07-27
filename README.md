@@ -33,6 +33,15 @@ npm install
 docker compose up
 ```
 
+## Running prisma
+
+```
+npx prisma generate
+```
+```
+npx prisma migrate dev
+```
+
 ---
 
 ## Docker scan
