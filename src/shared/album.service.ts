@@ -54,6 +54,11 @@ export class AlbumService {
       throw new HttpException('Cant find', HttpStatus.NOT_FOUND);
     } else {
       await this.prisma.album.deleteMany({ where: { id: id } });
+
+      await this.prisma.track.updateMany({
+        where: { albumId: id },
+        data: { albumId: null },
+      });
     }
   }
 
@@ -63,7 +68,12 @@ export class AlbumService {
     } else {
       const albumId = uuid.v4();
       return await this.prisma.album.create({
-        data: { name: body.name, year: body.year, id: albumId },
+        data: {
+          name: body.name,
+          year: body.year,
+          id: albumId,
+          artistId: body.artistId || null,
+        },
       });
     }
   }

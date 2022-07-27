@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Post,
 } from '@nestjs/common';
 import { FavoritesService } from '../shared/favorites.service';
@@ -18,36 +19,21 @@ export class FavsController {
     return this.favsService.getFavs();
   }
 
-  @Post('track/:id')
-  pushTrack(@Param('id') id: string) {
-    return this.favsService.pushTrack(id);
+  @Post(':type/:id')
+  @HttpCode(HttpStatus.CREATED)
+  create(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Param('type') type,
+  ): any {
+    return this.favsService.create(id, type);
   }
 
-  @Delete('track/:id')
+  @Delete(':type/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteTrack(@Param('id') id: string) {
-    return this.favsService.deleteTrack(id);
-  }
-
-  @Post('album/:id')
-  pushAlbum(@Param('id') id: string) {
-    return this.favsService.pushAlbum(id);
-  }
-
-  @Delete('album/:id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  deleteAlbum(@Param('id') id: string) {
-    return this.favsService.deleteAlbum(id);
-  }
-
-  @Post('artist/:id')
-  pushArtist(@Param('id') id: string) {
-    return this.favsService.pushArtist(id);
-  }
-
-  @Delete('artist/:id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  deleteArtist(@Param('id') id: string) {
-    return this.favsService.deleteArtist(id);
+  remove(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Param('type') type,
+  ): Promise<void> {
+    return this.favsService.remove(id, type);
   }
 }

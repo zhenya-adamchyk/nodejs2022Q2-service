@@ -68,7 +68,13 @@ export class TrackService {
     } else {
       const trackId = uuid.v4();
       return await this.prisma.track.create({
-        data: { name: body.name, duration: body.duration, id: trackId },
+        data: {
+          name: body.name,
+          duration: body.duration,
+          id: trackId,
+          albumId: body.albumId || null,
+          artistId: body.artistId || null,
+        },
       });
     }
   }
