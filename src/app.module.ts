@@ -11,6 +11,7 @@ import { ArtistController } from './artist/artist.controller';
 import { FavsController } from './favs/favs.controller';
 import { UserController } from './user/user.controller';
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { PrismaModule } from './prisma/prisma.module';
       isGlobal: true,
     }),
     PrismaModule,
+    AuthModule,
   ],
   controllers: [
     TrackController,
