@@ -25,6 +25,8 @@ model Track {
   duration Int
   fav Favorites?  @relation(fields: [favId], references: [id])
   favId Int?
+  Artist Artist? @relation(fields: [artistId], references: [id])
+  Album Album? @relation(fields: [albumId], references: [id])
 }
 
 model Artist {
@@ -33,6 +35,8 @@ model Artist {
   grammy Boolean
   fav Favorites?  @relation(fields: [favId], references: [id])
   favId Int?
+  tracks Track[]
+  albums Album[]
 }
 
 model Album {
@@ -41,7 +45,9 @@ model Album {
   year     Int
   artistId String?
   fav Favorites?  @relation(fields: [favId], references: [id])
+  Artist Artist? @relation(fields: [artistId], references: [id])
   favId Int?
+  tracks Track[]
 }
 
 model Favorites {

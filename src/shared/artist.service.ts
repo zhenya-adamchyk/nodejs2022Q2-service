@@ -60,15 +60,6 @@ export class ArtistService {
       throw new HttpException('Cant find', HttpStatus.NOT_FOUND);
     } else {
       await this.prisma.artist.deleteMany({ where: { id: id } });
-
-      await this.prisma.track.updateMany({
-        where: { artistId: id },
-        data: { artistId: null },
-      });
-      await this.prisma.album.updateMany({
-        where: { artistId: id },
-        data: { artistId: null },
-      });
     }
   }
 
