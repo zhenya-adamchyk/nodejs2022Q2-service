@@ -12,6 +12,8 @@ import { FavsController } from './favs/favs.controller';
 import { UserController } from './user/user.controller';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AtGuard } from './shared/guards';
 
 @Module({
   imports: [
@@ -34,6 +36,10 @@ import { AuthModule } from './auth/auth.module';
     UserService,
     AlbumService,
     ArtistService,
+    {
+      provide: APP_GUARD,
+      useClass: AtGuard,
+    },
   ],
 })
 export class AppModule {}
