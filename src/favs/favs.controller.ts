@@ -6,19 +6,22 @@ import {
   HttpStatus,
   Param,
   ParseUUIDPipe,
-  Post,
-} from '@nestjs/common';
+  Post, UseFilters
+} from "@nestjs/common";
 import { FavoritesService } from '../shared/favorites.service';
+import { HttpExceptionFilter } from "../shared/http-exception.filter";
 
 @Controller('favs')
 export class FavsController {
   constructor(private readonly favsService: FavoritesService) {}
 
+  @UseFilters(HttpExceptionFilter)
   @Get()
   getFavs() {
     return this.favsService.getFavs();
   }
 
+  @UseFilters(HttpExceptionFilter)
   @Post(':type/:id')
   @HttpCode(HttpStatus.CREATED)
   create(
@@ -28,6 +31,7 @@ export class FavsController {
     return this.favsService.create(id, type);
   }
 
+  @UseFilters(HttpExceptionFilter)
   @Delete(':type/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(
