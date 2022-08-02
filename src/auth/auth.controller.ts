@@ -1,15 +1,7 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { Tokens } from './types/tokens.type';
-import { AtGuard, RtGuard } from '../shared/guards';
 import { GetUser, GetUserId, Public } from '../shared/decorators';
 
 @Controller('auth')
@@ -29,8 +21,8 @@ export class AuthController {
     return this.authService.login(dto);
   }
 
-  // @Public()
-  @UseGuards(RtGuard)
+  @Public()
+  // @UseGuards(RtGuard)
   @Post('/refresh')
   refresh(
     @GetUserId() id: string,
