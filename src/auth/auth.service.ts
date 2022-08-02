@@ -43,8 +43,8 @@ export class AuthService {
       ),
     ]);
     return {
-      access_token: at,
-      refresh_token: rt,
+      accessToken: at,
+      refreshToken: rt,
     };
   }
 
@@ -68,7 +68,7 @@ export class AuthService {
       });
 
       const tokens = await this.getTokens(user.id, user.login);
-      await this.updateRtHash(user.id, tokens.refresh_token);
+      await this.updateRtHash(user.id, tokens.refreshToken);
       return tokens;
     }
   }
@@ -104,7 +104,7 @@ export class AuthService {
     if (!user) throw new HttpException('Cant find', HttpStatus.NOT_FOUND);
 
     const tokens = await this.getTokens(user.id, user.login);
-    await this.updateRtHash(user.id, tokens.refresh_token);
+    await this.updateRtHash(user.id, tokens.refreshToken);
     return tokens;
   }
 
@@ -116,7 +116,7 @@ export class AuthService {
       throw new HttpException('Cant find', HttpStatus.NOT_FOUND);
 
     const tokens = await this.getTokens(user.id, user.login);
-    await this.updateRtHash(user.id, tokens.refresh_token);
+    await this.updateRtHash(user.id, tokens.refreshToken);
     return tokens;
   }
 }
