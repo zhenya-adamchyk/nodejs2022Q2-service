@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TrackController } from './track/track.controller';
 import { ConfigModule } from '@nestjs/config';
 import { TrackService } from './shared/track.service';
@@ -14,6 +14,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AtGuard } from './shared/guards';
+import { LoggingMiddleware } from './shared/logging.middleware';
 
 @Module({
   imports: [
@@ -36,10 +37,14 @@ import { AtGuard } from './shared/guards';
     UserService,
     AlbumService,
     ArtistService,
-    {
-      provide: APP_GUARD,
-      useClass: AtGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: AtGuard,
+    // },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): any {
+    consumer.apply(LoggingMiddleware).forRoutes('*');
+  }
+}
