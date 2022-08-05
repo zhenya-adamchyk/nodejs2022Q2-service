@@ -17,15 +17,29 @@ export class LoggingMiddleware implements NestMiddleware {
         body,
       )} statusCode:${statusCode} statusMessage:${statusMessage} \n`;
 
+      if (!fs.existsSync('src/logs')) fs.mkdirSync('src/logs');
+
       fs.readdir('src/logs', (err, files) => {
         const currentFile = files[files.length - 1];
-        const lastFileSize = fs.statSync(`src/logs/${currentFile}`).size;
-        const index = +currentFile.split('.')[0].replace('log', '');
+        let lastFileSize;
+        let index;
+        if (currentFile) {
+          lastFileSize = fs.statSync(`src/logs/${currentFile}`).size;
+          index = +currentFile.split('.')[0].replace('log', '');
+        }
 
-        if (lastFileSize < +process.env.MAX_LOGS_FILE_SIZE) {
-          fs.appendFile(`src/logs/${currentFile}`, log, (err) => {});
+        if (!currentFile) {
+          fs.appendFile('src/logs/log1.txt', log, (err) => {
+            if (err) throw err;
+          });
+        } else if (lastFileSize < +process.env.MAX_LOGS_FILE_SIZE) {
+          fs.appendFile(`src/logs/${currentFile}`, log, (err) => {
+            if (err) throw err;
+          });
         } else {
-          fs.writeFile(`src/logs/log${index + 1}.txt`, log, (err) => {});
+          fs.writeFile(`src/logs/log${index + 1}.txt`, log, (err) => {
+            if (err) throw err;
+          });
         }
       });
 
